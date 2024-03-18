@@ -76,6 +76,10 @@
             background-color: #4CAF50; /* Verde */
         }
 
+        .nome-usado {
+            color: gray; /* Cor dos nomes já usados */
+        }
+
         #logo {
             position: fixed;
             bottom: 0;
@@ -138,6 +142,7 @@
 
         var lugares = [];
         var blocos = [];
+        var nomesUsados = []; // Lista para armazenar os nomes já utilizados
         var eventoSelecionado;
 
         function mostrarOpcoes() {
@@ -159,10 +164,10 @@
             mostrarImagemEvento(eventoSelecionado);
 
             if (eventoSelecionado === 'reuniao') {
-                lugares = ['Presidente', 'Secretario', 'Um dos membros do clube'];
+                lugares = ['Presidente', 'Tesoureiro', 'Secretario'];
                 blocos = lugares.slice();
             } else if (eventoSelecionado === 'posse') {
-                lugares = ['Presidente do Clube', 'Presidente Sucessor', 'Cônjuge do Presidente Sucessor', 'Cônjuge do Presidente do Clube', 'Governador', 'Governador Assistente', 'Cônjuge do Governador', 'Presidente do Clube mais Antigo', 'Autoridade Local'];
+                lugares = ['Presidente do Clube', 'Presidente Sucessor', 'Cônjuge do Presidente Sucessor', 'Cônjuge do Presidente do Clube', 'Governador', 'Presidente do Clube mais Antigo', 'Cônjuge do Governador', 'Presidente do Clube mais Antigo', 'Presidente do Clube Padrinho'];
                 blocos = lugares.slice();
             } else if (eventoSelecionado === 'visita') {
                 lugares = ['Presidente do Clube', 'Governador', 'Cônjuge do Governador', 'Cônjuge do Presidente do Clube', 'Presidente do Clube mais Antigo', 'Presidente do Clube Padrinho', 'Autoridade Local'];
@@ -228,17 +233,19 @@
             var nomeBloco = event.dataTransfer.getData('text/plain');
             var nomeLugar = event.target.getAttribute('data-nome');
 
-            var lugarDiv = event.target;
+            var blocoDiv = event.target;
 
             if (nomeBloco === nomeLugar) {
                 event.target.textContent = nomeBloco;
                 event.target.style.backgroundColor = '#4CAF50'; // Verde
                 event.target.classList.add('lugar-dropped');
+                nomesUsados.push(nomeBloco); // Adiciona o nome usado à lista de nomes usados
+                blocoDiv.classList.add('nome-usado'); // Adiciona a classe de estilo para indicar que o nome já foi usado
 
             } else {
-                lugarDiv.style.backgroundColor = '#ff0000'; // Vermelho
+                blocoDiv.style.backgroundColor = '#ff0000'; // Vermelho
                 setTimeout(() => {
-                    lugarDiv.style.backgroundColor = '#fff'; // Restaura a cor original após um curto período
+                    blocoDiv.style.backgroundColor = '#fff'; // Restaura a cor original após um curto período
                 }, 500);
             }
 
@@ -284,6 +291,7 @@
             // Reiniciar o jogo
             lugares = [];
             blocos = [];
+            nomesUsados = []; // Limpa a lista de nomes usados
             exibirLugares();
             exibirBlocos();
         }
